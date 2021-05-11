@@ -107,6 +107,10 @@
     margin-right: 12rem;
 }
 
+#opt {
+    background-color: var(--color-primary);
+}
+
 li .list-icon {
     font-size: x-large;
 }

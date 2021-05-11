@@ -24,7 +24,7 @@ const ModalAccountServiceForm = () => {
 
     //use states para a lista, nome a ser inserido na lista e abertura do Modal
     const [list, setList] = useState(JSON.parse(localStorage.getItem('categoriesList')) || []);
-    const [value, setValue] = useState('');
+    const [label, setLabel] = useState('');
 
     useEffect(() => {
         localStorage.setItem('categoriesList', JSON.stringify(list))
@@ -32,18 +32,18 @@ const ModalAccountServiceForm = () => {
 
     //função responsável por adicionar item na lista, passando o estado da lista atual mais o que será inserido (nome e id)
     const handleAdd = () => {
-        setList(oldList => [...oldList, {value, label: uuidv4()}]);
-        setValue('');
+        setList(oldList => [...oldList, {value: uuidv4(), label}]);
+        setLabel('');
     }
 
     //função responsável por deletar o item da lista selecionado através de um filter em cima da lista atual (...list)
-    const handleDeleteItemList = (id) => {
-        setList(oldList => [...oldList.filter((item) => item.label !== id)]);
+    const handleDeleteItemList = (value) => {
+        setList(oldList => [...oldList.filter((item) => item.value !== value)]);
     }
 
     //função que lida com mudança no input
     const handleInputChange = (event) => {
-        setValue(event.target.value)
+        setLabel(event.target.value)
     }
 
     const openModal = () => {
@@ -58,7 +58,7 @@ const ModalAccountServiceForm = () => {
         setEdit(false)
         setList((oldList) => oldList.map((item) => ({
             ...item,
-            value: edit === item.id ? value: item.value,
+            label: edit === item.value ? label: item.label,
         })))
     }
 
@@ -76,21 +76,21 @@ const ModalAccountServiceForm = () => {
                         <h2 className="list-title">{strings.categoriesListH2}</h2>
                         <ul>
                             {list.map((item) => ( 
-                                <li key={item.label}> { /*Método que percorre a lista adicionando um li com ícones */}
-                                    {  edit === item.label ? 
+                                <li key={item.value}> { /*Método que percorre a lista adicionando um li com ícones */}
+                                    {  edit === item.value ? 
                                         <input 
                                             onBlur={confirm} 
                                             onKeyPress={(e) => teclaEnter(e)} 
                                             type="text" 
-                                            value={value} 
-                                            onChange={(e) => setValue(e.target.value)}
+                                            value={label} 
+                                            onChange={(e) => setLabel(e.target.value)}
                                             autoFocus/> 
                                     : 
                                         <div>
-                                            <span>{item.value}</span>
+                                            <span>{item.label}</span>
                                             <InfoIcon className="list-icon" id="info-category-icon"/>
-                                            <DeleteIcon className="list-icon" id="delete-category-icon" onClick={() => handleDeleteItemList(item.label)}/>
-                                            <EditIcon className="list-icon" id="edit-category-icon" onClick={() => setEdit(item.label)}/>
+                                            <DeleteIcon className="list-icon" id="delete-category-icon" onClick={() => handleDeleteItemList(item.value)}/>
+                                            <EditIcon className="list-icon" id="edit-category-icon" onClick={() => setEdit(item.value)}/>
                                         </div>
                                     }
                                 </li>
@@ -112,6 +112,7 @@ const ModalAccountServiceForm = () => {
                     if(document.getElementById("name").value === "") {
                         alert("Campo vazio!")
                     } else {
+                        console.log(document.getElementById("name").value)
                         handleAdd();
                         e.preventDefault();
                     }
@@ -119,7 +120,7 @@ const ModalAccountServiceForm = () => {
                     <div className="form-inputs">
                         <label>
                             {strings.categoryFormLabel}
-                            <input id="name" placeholder="Ex: Gmail" value={value} onChange={handleInputChange}/>
+                            <input id="name" placeholder="Ex: Gmail" value={label} onChange={handleInputChange}/>
                         </label>
                     </div>
                     <Button className="submit-button" type="submit">{strings.submitFormButton}</Button>

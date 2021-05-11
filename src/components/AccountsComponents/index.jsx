@@ -26,8 +26,7 @@ const ModalAccountsForm = () => {
     const [description, setDescription] = useState('');
     const [option, setOption] = useState('');
     let categoriesList = JSON.parse(localStorage.getItem('categoriesList'))
-    console.log(categoriesList)
-
+    
     useEffect(() => { //useEffect para colocar a lista no localStorage toda vez que seu estado alterar
         localStorage.setItem('accountsList', JSON.stringify(list))
     }, [list])
@@ -60,8 +59,8 @@ const ModalAccountsForm = () => {
     }
 
     //função responsável por setar a opção escolhida do select no state
-    const handleSelect = (event) => {
-        setOption(event.target.value)
+    const handleSelect = (selectedOption) => {
+        setOption(selectedOption.label)
     }
 
     //função para alterar o item a ser editado após o click no edit button
@@ -178,11 +177,11 @@ const ModalAccountsForm = () => {
                     <div className="form-inputs">
                         <label className="modal-inputs">
                             {strings.categoryAccountFormLabel}
-                            <Select
+                            <Select 
+                                id="opt"
                                 placeholder="Selecione uma categoria" 
                                 onChange={handleSelect}
-                                options={categoriesList.value} 
-                                value={categoriesList.value}/>
+                                options={categoriesList} />
                         </label>
                         <label className="modal-inputs">
                             {strings.descAccountFormP}
