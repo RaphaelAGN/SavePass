@@ -4,8 +4,11 @@ import Modal from 'react-modal';
 import strings from '../../assets/strings/strings'
 
 import { Fab } from '@material-ui/core';
+import Select from 'react-select';
 import Button from '@material-ui/core/Button'
 
+import DescriptionIcon from '@material-ui/icons/Description';
+import LockIcon from '@material-ui/icons/Lock';
 import CloseIcon from '@material-ui/icons/Close';
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit';
@@ -21,7 +24,9 @@ const ModalAccountsForm = () => {
     const [list, setList] = useState(JSON.parse(localStorage.getItem('accountsList')) || []);
     const [password, setPassword] = useState('');
     const [description, setDescription] = useState('');
-    const [option, setOption] = useState('')
+    const [option, setOption] = useState('');
+    let categoriesList = JSON.parse(localStorage.getItem('categoriesList'))
+    console.log(categoriesList)
 
     useEffect(() => { //useEffect para colocar a lista no localStorage toda vez que seu estado alterar
         localStorage.setItem('accountsList', JSON.stringify(list))
@@ -33,15 +38,7 @@ const ModalAccountsForm = () => {
     //state do main modal aberto 
     const [isOpen, setIsOpen] = useState(false);
 
-    //funções que lidam com os valores do input
-    const handleDescInputChange = (event) => {
-        setDescription(event.target.value)
-    }
-
-    const handlePassInputChange = (event) => {
-        setPassword(event.target.value)
-    }
-
+    //funções que definem o state de abertura e fechamento do modal
     const openMainModal = () => {
         setIsOpen(true)
     }
@@ -62,6 +59,7 @@ const ModalAccountsForm = () => {
         setList(list => [...list.filter((item) => item.id !== id)]);
     }
 
+    //função responsável por setar a opção escolhida do select no state
     const handleSelect = (event) => {
         setOption(event.target.value)
     }
@@ -71,6 +69,7 @@ const ModalAccountsForm = () => {
         setEdit(false)
         setList((oldList) => oldList.map((item) => ({
             ...item,
+            option: edit === item.id ? option : item.option,
             description: edit === item.id ? description: item.description,
             password: edit === item.id ? password: item.password,
         })))
@@ -82,29 +81,20 @@ const ModalAccountsForm = () => {
     }
 
     //função para setar as options do select 
-    const selectOptions = () => {
-        let options = [{
-            id: -1, //valor default da lista
-            name: "Selecione uma categoria"
-        }]
+   /* const selectOptions = () => {
+        let options = []
         let categoriesList = JSON.parse(localStorage.getItem('categoriesList')) //busca no local storage a lista de categorias
-        if(categoriesList === null) {
-            return (options.push(<option></option>))
-        } else {
-            categoriesList.forEach(({id, name}) => options.push({id, name})) //para cada item da storage, insere seus valores na lista de opções
-            options.sort(compare) //ordena a lista
-            return (options.filter((item) => ( //filtra a lista e verifica se eh o valor default
-                item.id === -1 ? <option disabled hidden></option> : <option></option> //se for valor default, desabilita a opção, se não, mantém
-            )).map((item) => ( //para cada item da lista, seta o valor da opção
-                <option key={item.id} value={item.name}>{item.name}</option>
-            )))
-        }
-    }
+        categoriesList.forEach(({id, name}) => options.push({id, name})) //para cada item da storage, insere seus valores na lista de opções
+        options.sort(compare) //ordena a lista
+        return (options.map((item) => (
+            <option key={item.id} value={item.name}>{item.name}</option>
+        )))
+    }*/
 
     //função para ordenar as options do select em ordem alfabética
     const compare = (x, y) => {
         if(x.id === -1){ //caso seja o valor default, mantém como o primeiro da lista e o selecionado por padrão
-            return -1;
+            return;
         } else {
             if ( x.name < y.name ) {
                 return -1;
@@ -115,10 +105,6 @@ const ModalAccountsForm = () => {
         }
         return 0;
     }
-
-    /*const handleSave = () => {
-        
-    }*/
 
     return (
         <div>
@@ -133,37 +119,33 @@ const ModalAccountsForm = () => {
                                     { edit === item.id ?
                                         <div>
                                             <input 
-                                                onBlur={confirm}
-                                                onKeyPress={(e) => teclaEnter(e, item.description)}
+                                                /* onBlur={confirm} */
+                                                onKeyPress={(e) => teclaEnter(e)}
                                                 type="text"
                                                 value={description}
                                                 onChange={(e) => setDescription(e.target.value)}
                                                 autoFocus
                                             />
-                                            <input 
-                                                onBlur={confirm}
-                                                onKeyPress={(e) => teclaEnter(e, item.password)}
-                                                type="text"
-                                                value={password}
-                                                onChange={(e) => setPassword(e.target.value)}
-                                                autoFocus
-                                            />  
                                         </div>
                                     :
                                         <div className="list-item">
                                             <span className="item-span" id="category-span">
-                                                <p>{item.option}</p>
+                                                <p>
+                                                    {item.option}
+                                                    <DeleteIcon className="list-icon" id="delete-icon" onClick={() => handleDeleteItemList(item.id)}/>
+                                                </p>                                        
                                             </span>
                                             <span className="item-span" id="desc-span">
+                                                <DescriptionIcon id="desc-icon"/>
                                                 <p>{strings.descAccountFormP}:</p>
-                                                <span>{item.description}</span>
-                                                <DeleteIcon className="list-icon" id="delete-icon" onClick={() => handleDeleteItemList(item.id)}/>
                                                 <EditIcon className="list-icon" id="edit-icon" /*onClick={() => setEdit(item.id)}*//>
+                                                <span>{item.description}</span>
                                             </span>
                                             <span className="item-span" id="pass-span">
+                                                <LockIcon id="pass-icon"/>
                                                 <p>{strings.passAccountFormP}:</p>
-                                                <span>{item.password}</span>
                                                 <EditIcon className="list-icon" id="edit-icon" /*onClick={() => setEdit(item.id)}*//>
+                                                <span>{item.password}</span>
                                             </span>
                                         </div>
                                     }     
@@ -178,30 +160,40 @@ const ModalAccountsForm = () => {
             </Fab>
 
             <Modal
-                className="Modal"
-                overlayClassName="Overlay"
+                className="modal-accounts"
+                overlayClassName="overlay-accounts"
                 isOpen={isOpen}
                 onRequestClose={closeMainModal}>
                 <h2>{strings.accountFormH2}</h2>
-                <form className="form" onSubmit={(e) => {
-                    handleAdd();
-                    e.preventDefault();
+                <form className="account-form" onSubmit={(e) => {
+                    if(document.getElementById("desc").value === "" ||  //Se um dos 3 campos da modal estiver vazio, lança um alert
+                        document.getElementById("pass").value === "" || 
+                        document.getElementById("opt").value === ""){
+                        alert("Campo vazio!")
+                    } else {
+                        handleAdd()
+                        e.preventDefault()
+                    }
                 }}>
                     <div className="form-inputs">
-                        <label>
+                        <label className="modal-inputs">
                             {strings.categoryAccountFormLabel}
-                            <select placeholder="Selecione uma categoria" onChange={handleSelect} value={option}>{selectOptions()}</select>
+                            <Select
+                                placeholder="Selecione uma categoria" 
+                                onChange={handleSelect}
+                                options={categoriesList.value} 
+                                value={categoriesList.value}/>
                         </label>
-                        <label>
-                            {strings.descAccountFormLabel}
-                            <input placeholder="Ex: Conta pessoal gmail" value={description} onChange={handleDescInputChange}/>
+                        <label className="modal-inputs">
+                            {strings.descAccountFormP}
+                            <input placeholder="Ex: Conta pessoal gmail" id="desc" value={description} onChange={(e) => setDescription(e.target.value)}/>
                         </label>
-                        <label>
-                            {strings.passAccountFormLabel}
-                            <input placeholder="Digite a senha" value={password} onChange={handlePassInputChange}/>
+                        <label className="modal-inputs">
+                            {strings.passAccountFormP}
+                            <input placeholder="Digite a senha" id="pass" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         </label>
                     </div>
-                    <Button className="submit-button" type="submit">{strings.submitFormButton}</Button>
+                    <Button className="submit-account-button" type="submit">{strings.submitFormButton}</Button>
                     <Fab className="fabCloseFloatButton" aria-label="add" onClick={closeMainModal}>
                         <CloseIcon />
                     </Fab>

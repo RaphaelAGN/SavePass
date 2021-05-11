@@ -8,16 +8,16 @@
     transform: translate(-50%, -50%);
 }
 
-.Modal {
+.modal-categories {
     position: absolute;
     top: 20rem;
     left: 45rem;
     right: 45rem;
-    bottom: 30rem;
+    bottom: 35rem;
     background-color: var(--color-background);
-  }
+}
 
-.Overlay {
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -45,36 +45,24 @@
     max-height: 60vh;
     overflow-y: scroll;
 }
-  
-li {
-    width: 100%;
-    text-align: center;
-    font-family: 'Original Surf', cursive;
-    background-color: var(--color-primary);
-    border-radius: 10px;
-    margin: 2px;
-    padding: 10px;
-    font-size: 18px;
-    cursor: pointer;
-}
 
-li .list-icon {
+.list-icon {
     font-size: x-large;
 }
 
-li .list-icon:hover {
+.list-icon:hover {
     color: var(--color-iconhover);
 }
 
-li #delete-icon{
+#delete-category-icon{
     float: right;
 }
 
-li #edit-icon {
+#edit-category-icon {
     float: right;
 }
 
-li #info-icon {
+#info-category-icon {
     float: left;
 }
 
@@ -93,21 +81,21 @@ input, label {
     width: 25rem;
 }
 
-input {
-    margin-top: 8px;
+.form-inputs input {
+    margin-top: 2rem;
     padding: 5px;
     border-radius: 5px;
 }
 
-label{
+.form-inputs label{
     font-size: large;
     color: var(--color-secondary);
     font-family: 'Original Surf', cursive;
-    margin-top: 5rem;
+    margin-top: 2rem;
     margin-bottom: 1rem;
 }
 
-.form .fabCloseFloatButton {
+.category-form .fabCloseFloatButton {
     color: var(--color-dark);
     background-color: var(--color-primary);
     margin: 0px;
@@ -118,12 +106,12 @@ label{
     position: fixed;
 }
 
-.form .fabCloseFloatButton:hover {
+.category-form .fabCloseFloatButton:hover {
     color: var(--color-dark);
     background-color: var(--color-primary-dark);
 }
 
-.form .submit-button {
+.category-form .submit-button {
     background-color: var(--color-primary);
     color: var(--color-dark);
     font-family: 'Original Surf', cursive;
@@ -133,11 +121,11 @@ label{
     justify-content: center;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5rem;
+    margin-top: 3rem;
     width: 25rem;
 }
 
-.form .submit-button:hover {
+.category-form .submit-button:hover {
     color: var(--color-dark);
     background-color: var(--color-primary-dark);
 }

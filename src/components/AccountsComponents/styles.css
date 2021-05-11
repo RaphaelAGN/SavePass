@@ -8,17 +8,16 @@
     transform: translate(-50%, -50%);
 }
 
-.Modal {
+.modal-accounts {
     position: absolute;
-    height: fit-content;
-    top: 16rem;
+    top: 15rem;
     left: 45rem;
     right: 45rem;
-    bottom: 30rem;
+    bottom: 15rem;
     background-color: var(--color-background);
-  }
+}
 
-.Overlay {
+.overlay-accounts {
     position: fixed;
     top: 0;
     left: 0;
@@ -37,39 +36,30 @@
     margin-top: 15rem;
     list-style: none;
     overflow: hidden;
-    width: 40vw;
+    width: 30vw;
     position: fixed;
     max-height: 60vh;
     overflow-y: scroll;
 }
-  
-li {
-    width: 100%;
-    text-align: center;
-    font-family: 'Original Surf', cursive;
-    background-color: var(--color-primary);
-    border-radius: 10px;
-    margin: 2px;
-    padding: 10px;
-    font-size: 18px;
-    cursor: pointer;
-}
+
 
 .list-item {
     display: grid;
 }
 
 .list-item .item-span p {
-    font-family: 'Anton', sans-serif;
+    font-family: 'Original Surf', cursive;
 }
 
-.list-item #category-span {
-    margin-bottom: 1rem;
+.list-item #category-span p {
+    margin-bottom: 2rem;
     text-transform: uppercase;
 }
 
 .list-item #desc-span {
     margin-bottom: 2rem;
+    background-color: var(--color-primary-dark);
+    border-radius: 8px;
 }
 
 .list-item #desc-span p {
@@ -78,9 +68,23 @@ li {
     grid-row: 1;
 }
 
+.list-item #desc-icon {
+    float: left;
+    font-size: large;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
 .list-item #desc-span span {
     grid-column: 2;
     grid-row: 1;
+    float: right;
+    margin-right: 12rem;
+}
+
+.list-item #pass-span {
+    background-color: var(--color-primary-dark);
+    border-radius: 8px;
 }
 
 .list-item #pass-span p {
@@ -89,9 +93,18 @@ li {
     grid-row: 2;
 }
 
+.list-item #pass-icon {
+    float: left;
+    font-size: large;
+    margin-top: 0.5rem;
+    margin-right: 1rem;
+}
+
 .list-item #pass-span span {
     grid-column: 2;
     grid-row: 2;
+    float: right;
+    margin-right: 12rem;
 }
 
 li .list-icon {
@@ -104,6 +117,7 @@ li #edit-icon {
 
 li #delete-icon{
     float: right;
+    margin-top: 0;
 }
 
 h2 {
@@ -126,7 +140,7 @@ input, select {
     border-radius: 5px;
 }
 
-label {
+.modal-inputs {
     font-size: large;
     color: var(--color-secondary);
     font-family: 'Original Surf', cursive;
@@ -134,7 +148,7 @@ label {
     margin-bottom: 1rem;
 }
 
-.form .fabCloseFloatButton {
+.account-form .fabCloseFloatButton {
     color: var(--color-dark);
     background-color: var(--color-primary);
     margin: 0px;
@@ -145,12 +159,12 @@ label {
     position: fixed;
 }
 
-.form .fabCloseFloatButton:hover {
+.account-form .fabCloseFloatButton:hover {
     color: var(--color-dark);
     background-color: var(--color-primary-dark);
 }
 
-.form .submit-button {
+.account-form .submit-account-button {
     background-color: var(--color-primary);
     color: var(--color-dark);
     font-family: 'Original Surf', cursive;
@@ -165,7 +179,7 @@ label {
     width: 25rem;
 }
 
-.form .submit-button:hover {
+.account-form .submit-account-button:hover {
     color: var(--color-dark);
     background-color: var(--color-primary-dark);
 }

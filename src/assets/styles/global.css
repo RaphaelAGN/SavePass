@@ -9,6 +9,18 @@
     --color-iconhover: #646467;
 }
 
+li {
+    width: 100%;
+    text-align: center;
+    font-family: 'Original Surf', cursive;
+    background-color: var(--color-primary);
+    border-radius: 10px;
+    margin: 2px;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
 * {
     margin: 0;
     padding: 0;

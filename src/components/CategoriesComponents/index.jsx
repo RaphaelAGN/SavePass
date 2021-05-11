@@ -24,7 +24,7 @@ const ModalAccountServiceForm = () => {
 
     //use states para a lista, nome a ser inserido na lista e abertura do Modal
     const [list, setList] = useState(JSON.parse(localStorage.getItem('categoriesList')) || []);
-    const [name, setName] = useState('');
+    const [value, setValue] = useState('');
 
     useEffect(() => {
         localStorage.setItem('categoriesList', JSON.stringify(list))
@@ -32,18 +32,18 @@ const ModalAccountServiceForm = () => {
 
     //função responsável por adicionar item na lista, passando o estado da lista atual mais o que será inserido (nome e id)
     const handleAdd = () => {
-        setList(oldList => [...oldList, {name, id: uuidv4()}]);
-        setName('');
+        setList(oldList => [...oldList, {value, label: uuidv4()}]);
+        setValue('');
     }
 
     //função responsável por deletar o item da lista selecionado através de um filter em cima da lista atual (...list)
     const handleDeleteItemList = (id) => {
-        setList(oldList => [...oldList.filter((item) => item.id !== id)]);
+        setList(oldList => [...oldList.filter((item) => item.label !== id)]);
     }
 
     //função que lida com mudança no input
     const handleInputChange = (event) => {
-        setName(event.target.value)
+        setValue(event.target.value)
     }
 
     const openModal = () => {
@@ -53,19 +53,18 @@ const ModalAccountServiceForm = () => {
     const closeModal = () => {
         setIsMainOpen(false)
     }
-
     //função para alterar o item a ser editado após o click no edit button
     const confirm = () => {
         setEdit(false)
         setList((oldList) => oldList.map((item) => ({
             ...item,
-            name: edit === item.id ? name: item.name,
+            value: edit === item.id ? value: item.value,
         })))
     }
 
     //função para definir ação de enter após clicar no edit button
     const teclaEnter = (e) => {
-        if (e.key === 'Enter') confirm();
+        if (e.key === 'Enter' && e.target.value !== "") confirm();
     };
 
     return (
@@ -77,21 +76,21 @@ const ModalAccountServiceForm = () => {
                         <h2 className="list-title">{strings.categoriesListH2}</h2>
                         <ul>
                             {list.map((item) => ( 
-                                <li key={item.id}> { /*Método que percorre a lista adicionando um li com ícones */}
-                                    {  edit === item.id ? 
+                                <li key={item.label}> { /*Método que percorre a lista adicionando um li com ícones */}
+                                    {  edit === item.label ? 
                                         <input 
                                             onBlur={confirm} 
                                             onKeyPress={(e) => teclaEnter(e)} 
                                             type="text" 
-                                            value={name} 
-                                            onChange={(e) => setName(e.target.value)}
+                                            value={value} 
+                                            onChange={(e) => setValue(e.target.value)}
                                             autoFocus/> 
                                     : 
                                         <div>
-                                            <span>{item.name}</span>
-                                            <InfoIcon className="list-icon" id="info-icon"/>
-                                            <DeleteIcon className="list-icon" id="delete-icon" onClick={() => handleDeleteItemList(item.id)}/>
-                                            <EditIcon className="list-icon" id="edit-icon" onClick={() => setEdit(item.id)}/>
+                                            <span>{item.value}</span>
+                                            <InfoIcon className="list-icon" id="info-category-icon"/>
+                                            <DeleteIcon className="list-icon" id="delete-category-icon" onClick={() => handleDeleteItemList(item.label)}/>
+                                            <EditIcon className="list-icon" id="edit-category-icon" onClick={() => setEdit(item.label)}/>
                                         </div>
                                     }
                                 </li>
@@ -104,22 +103,26 @@ const ModalAccountServiceForm = () => {
                 <AddIcon />
             </Fab>
             <Modal
-                className="Modal"
-                overlayClassName="Overlay"
+                className="modal-categories"
+                overlayClassName="overlay"
                 isOpen={isMainOpen}
                 onRequestClose={closeModal}>
-                <h2>{strings.categoryFormH2}</h2>
-                <form className="form" onSubmit={(e) => {
-                    handleAdd();
-                    e.preventDefault();
+                <h2 className="modalh2">{strings.categoryFormH2}</h2>
+                <form className="category-form" onSubmit={(e) => {
+                    if(document.getElementById("name").value === "") {
+                        alert("Campo vazio!")
+                    } else {
+                        handleAdd();
+                        e.preventDefault();
+                    }
                 }}>
                     <div className="form-inputs">
                         <label>
                             {strings.categoryFormLabel}
-                            <input placeholder="Ex: Gmail" value={name} onChange={handleInputChange}/>
+                            <input id="name" placeholder="Ex: Gmail" value={value} onChange={handleInputChange}/>
                         </label>
                     </div>
-                    <Button className="submit-button" onClick={handleAdd}>{strings.submitFormButton}</Button>
+                    <Button className="submit-button" type="submit">{strings.submitFormButton}</Button>
                     <Fab className="fabCloseFloatButton" aria-label="add" onClick={closeModal}>
                         <CloseIcon />
                     </Fab>
