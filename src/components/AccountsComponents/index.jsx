@@ -90,21 +90,6 @@ const ModalAccountsForm = () => {
         )))
     }*/
 
-    //função para ordenar as options do select em ordem alfabética
-    const compare = (x, y) => {
-        if(x.id === -1){ //caso seja o valor default, mantém como o primeiro da lista e o selecionado por padrão
-            return;
-        } else {
-            if ( x.name < y.name ) {
-                return -1;
-            }
-            if ( x.name > y.name ) {
-                return 1;
-            }
-        }
-        return 0;
-    }
-
     return (
         <div>
             <div className="content">
@@ -214,6 +199,7 @@ const customStyles = {
     control: provided => ({
       ...provided,
       color: 'black',
+      marginTop: '2rem',
       "&:hover": {
         borderColor: "#66FCF1"
       }
