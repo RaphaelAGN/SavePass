@@ -181,7 +181,8 @@ const ModalAccountsForm = () => {
                                 id="opt"
                                 placeholder="Selecione uma categoria" 
                                 onChange={handleSelect}
-                                options={categoriesList} />
+                                options={categoriesList}
+                                styles={customStyles} />
                         </label>
                         <label className="modal-inputs">
                             {strings.descAccountFormP}
@@ -201,5 +202,26 @@ const ModalAccountsForm = () => {
         </div>
     )
 }
+
+const customStyles = {
+    option: provided => ({
+      ...provided,
+      color: 'black',
+      "&:hover": {
+        backgroundColor: "#66FCF1"
+      }
+    }),
+    control: provided => ({
+      ...provided,
+      color: 'black',
+      "&:hover": {
+        borderColor: "#66FCF1"
+      }
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: 'black'
+    })
+  }
 
 export default ModalAccountsForm
